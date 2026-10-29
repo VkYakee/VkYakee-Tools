@@ -1,0 +1,603 @@
+/* ==========================================================================
+   CASUAL MOBILE-FIRST APP REDESIGN (iOS & Android Style)
+   VkYakee Craft Studio — Multi-Tool para Minecraft
+   ========================================================================== */
+
+:root {
+  --app-bg: #090e17;
+  --app-surface: #121a28;
+  --app-surface-elevated: #1a2436;
+  --app-surface-glass: rgba(18, 26, 40, 0.88);
+  --app-border: rgba(255, 255, 255, 0.08);
+  --app-border-hover: rgba(255, 255, 255, 0.16);
+  --app-primary: #10b981;
+  --app-primary-glow: rgba(16, 185, 129, 0.28);
+  --app-cyan: #06b6d4;
+  --app-amber: #f59e0b;
+  --app-purple: #8b5cf6;
+  --app-text-main: #f8fafc;
+  --app-text-muted: #94a3b8;
+  --app-text-dim: #64748b;
+  --app-font: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* --- Estructura Principal de la App --- */
+body {
+  background-color: var(--app-bg);
+  color: var(--app-text-main);
+  font-family: var(--app-font);
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+#app {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100dvh;
+  overflow: hidden;
+  position: relative;
+}
+
+/* --- Barra Superior Moderna (App Bar Casual) --- */
+.app-header {
+  height: 56px;
+  background: var(--app-surface-glass);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--app-border);
+  padding: 0 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+  z-index: 50;
+  flex-shrink: 0;
+}
+
+.app-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  text-decoration: none;
+  color: var(--app-text-main);
+}
+
+.app-brand-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 9px;
+  background: linear-gradient(135deg, #10b981, #06b6d4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.05rem;
+  box-shadow: 0 4px 12px var(--app-primary-glow);
+}
+
+.app-brand-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.app-brand-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.15;
+}
+
+.app-brand-badge {
+  font-size: 0.64rem;
+  color: #34d399;
+  font-weight: 600;
+}
+
+.app-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.app-help-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid var(--app-border);
+  background: var(--app-surface-elevated);
+  color: var(--app-text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.app-help-btn:active {
+  transform: scale(0.92);
+}
+
+.app-cta-btn {
+  height: 36px;
+  padding: 0 0.85rem;
+  border-radius: 10px;
+  border: none;
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: #04140d;
+  font-size: 0.8rem;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.3);
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+
+.app-cta-btn:active {
+  transform: scale(0.95);
+}
+
+/* --- Contenedor de Vistas (Scrollable) --- */
+.app-content {
+  flex: 1;
+  position: relative;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-bottom: calc(72px + var(--safe-bottom));
+}
+
+.mt-tool-view {
+  width: 100%;
+  height: 100%;
+}
+
+.mt-tool-view.is-hidden {
+  display: none !important;
+}
+
+/* ==========================================================================
+   VISTA DE INICIO (HOME HUB CASUAL)
+   ========================================================================== */
+.home-hub {
+  padding: 1.1rem 1rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  max-width: 680px;
+  margin: 0 auto;
+}
+
+/* Banner de Saludo */
+.home-hero {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.14) 0%, rgba(6, 182, 212, 0.08) 100%);
+  border: 1px solid rgba(16, 185, 129, 0.25);
+  border-radius: 20px;
+  padding: 1.2rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.home-hero-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  background: rgba(16, 185, 129, 0.2);
+  color: #34d399;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+  margin-bottom: 0.45rem;
+}
+
+.home-hero-title {
+  margin: 0;
+  font-size: 1.35rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #ffffff;
+}
+
+.home-hero-sub {
+  margin: 0.35rem 0 0;
+  font-size: 0.85rem;
+  color: var(--app-text-muted);
+  line-height: 1.45;
+}
+
+/* Sección de Herramientas (4 Tarjetas Casuales) */
+.home-section-title {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--app-text-main);
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.home-tools-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.8rem;
+}
+
+@media (max-width: 480px) {
+  .home-tools-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.home-tool-card {
+  background: var(--app-surface);
+  border: 1px solid var(--app-border);
+  border-radius: 18px;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  cursor: pointer;
+  transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+  text-align: left;
+}
+
+.home-tool-card:active {
+  transform: scale(0.97);
+}
+
+.home-tool-card:hover {
+  border-color: var(--app-border-hover);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+.home-tool-card.card-editor {
+  border-left: 4px solid #10b981;
+}
+
+.home-tool-card.card-hologram {
+  border-left: 4px solid #06b6d4;
+}
+
+.home-tool-card.card-converter {
+  border-left: 4px solid #f59e0b;
+}
+
+.home-tool-card.card-merger {
+  border-left: 4px solid #8b5cf6;
+}
+
+.home-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.home-card-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.35rem;
+}
+
+.home-card-icon.is-green {
+  background: rgba(16, 185, 129, 0.16);
+  color: #34d399;
+}
+
+.home-card-icon.is-cyan {
+  background: rgba(6, 182, 212, 0.16);
+  color: #38bdf8;
+}
+
+.home-card-icon.is-amber {
+  background: rgba(245, 158, 11, 0.16);
+  color: #fbbf24;
+}
+
+.home-card-icon.is-purple {
+  background: rgba(139, 92, 246, 0.16);
+  color: #a78bfa;
+}
+
+.home-card-arrow {
+  font-size: 1.1rem;
+  color: var(--app-text-dim);
+}
+
+.home-card-title {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.home-card-desc {
+  margin: 0;
+  font-size: 0.78rem;
+  color: var(--app-text-muted);
+  line-height: 1.4;
+}
+
+.home-card-btn {
+  margin-top: auto;
+  padding: 0.45rem 0.75rem;
+  border-radius: 9px;
+  border: 1px solid var(--app-border);
+  background: var(--app-surface-elevated);
+  color: var(--app-text-main);
+  font-size: 0.75rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+}
+
+/* Plantillas Rápidas (1 Toque) */
+.home-presets-scroll {
+  display: flex;
+  gap: 0.65rem;
+  overflow-x: auto;
+  padding-bottom: 0.4rem;
+  scrollbar-width: none;
+}
+
+.home-presets-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.home-preset-pill {
+  flex-shrink: 0;
+  background: var(--app-surface);
+  border: 1px solid var(--app-border);
+  border-radius: 14px;
+  padding: 0.6rem 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.home-preset-pill:active {
+  transform: scale(0.95);
+}
+
+.home-preset-pill:hover {
+  border-color: rgba(16, 185, 129, 0.4);
+}
+
+.home-preset-thumb {
+  width: 28px;
+  height: 28px;
+  font-size: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.home-preset-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.home-preset-name {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.home-preset-sub {
+  font-size: 0.66rem;
+  color: var(--app-text-dim);
+}
+
+/* Consejos Útiles */
+.home-tips-card {
+  background: var(--app-surface);
+  border: 1px solid var(--app-border);
+  border-radius: 16px;
+  padding: 0.9rem 1rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.home-tip-icon {
+  font-size: 1.3rem;
+  flex-shrink: 0;
+}
+
+.home-tip-text {
+  font-size: 0.78rem;
+  color: var(--app-text-muted);
+  line-height: 1.45;
+}
+
+.home-tip-text strong {
+  color: #ffffff;
+}
+
+/* ==========================================================================
+   BARRA DE NAVEGACIÓN INFERIOR (TAB BAR CASUAL MOBILE)
+   ========================================================================== */
+.app-bottom-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: calc(62px + var(--safe-bottom));
+  padding-bottom: var(--safe-bottom);
+  background: var(--app-surface-glass);
+  backdrop-filter: blur(20px);
+  border-top: 1px solid var(--app-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  z-index: 60;
+  box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.4);
+}
+
+.app-tab-item {
+  flex: 1;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.2rem;
+  background: transparent;
+  border: none;
+  color: var(--app-text-dim);
+  cursor: pointer;
+  transition: all 0.18s cubic-bezier(0.2, 0.8, 0.2, 1);
+  padding: 0.25rem 0;
+  text-decoration: none;
+  outline: none;
+}
+
+.app-tab-icon {
+  font-size: 1.25rem;
+  line-height: 1;
+  transition: transform 0.18s ease;
+}
+
+.app-tab-label {
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.app-tab-item:active {
+  transform: scale(0.92);
+}
+
+.app-tab-item.is-active {
+  color: #34d399;
+}
+
+.app-tab-item.is-active .app-tab-icon {
+  transform: translateY(-2px) scale(1.1);
+}
+
+.app-tab-item.is-active .app-tab-label {
+  color: #34d399;
+  font-weight: 700;
+}
+
+/* ==========================================================================
+   MODAL DE AYUDA (GUÍA CASUAL PARA PRINCIPIANTES)
+   ========================================================================== */
+.app-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(3, 7, 14, 0.75);
+  backdrop-filter: blur(10px);
+  z-index: 100;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+
+.app-modal-backdrop.is-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.app-modal-sheet {
+  width: 100%;
+  max-width: 540px;
+  max-height: 85vh;
+  background: var(--app-surface);
+  border: 1px solid var(--app-border);
+  border-radius: 24px 24px 0 0;
+  box-shadow: 0 -12px 40px rgba(0, 0, 0, 0.7);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transform: translateY(100%);
+  transition: transform 0.25s cubic-bezier(0.18, 0.89, 0.32, 1.1);
+  padding-bottom: var(--safe-bottom);
+}
+
+.app-modal-backdrop.is-open .app-modal-sheet {
+  transform: translateY(0);
+}
+
+.app-sheet-handle {
+  width: 44px;
+  height: 5px;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.2);
+  margin: 0.65rem auto 0.35rem;
+}
+
+.app-sheet-header {
+  padding: 0.6rem 1.2rem 0.8rem;
+  border-bottom: 1px solid var(--app-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.app-sheet-title {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.app-sheet-body {
+  padding: 1.2rem;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.guide-step {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.8rem;
+  background: var(--app-surface-elevated);
+  padding: 0.85rem;
+  border-radius: 14px;
+  border: 1px solid var(--app-border);
+}
+
+.guide-step-icon {
+  font-size: 1.4rem;
+  flex-shrink: 0;
+}
+
+.guide-step-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.guide-step-title {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.guide-step-desc {
+  font-size: 0.78rem;
+  color: var(--app-text-muted);
+  line-height: 1.4;
+  margin: 0;
+}

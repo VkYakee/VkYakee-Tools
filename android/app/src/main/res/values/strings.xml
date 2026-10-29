@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">VkYakee Multi-Tool</string>
+    <string name="title_activity_main">VkYakee Multi-Tool</string>
+    <string name="package_name">com.vkyakee.multitool</string>
+    <string name="custom_url_scheme">com.vkyakee.multitool</string>
+</resources>
