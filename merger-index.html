@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>VkYakee — Fusionador de Paquetes de Texturas (.mcpack)</title>
+    <meta
+      name="description"
+      content="Módulo independiente para fusionar paquetes de texturas de Minecraft Bedrock (.mcpack / .zip) con Deep Merge de JSONs y edición de texturas."
+    />
+    <link rel="stylesheet" href="/texture-editor.css" />
+    <link rel="stylesheet" href="/merger.css" />
+  </head>
+  <body>
+    <div id="merger-standalone-app"></div>
+
+    <!-- Modal integrado con TextureEditor para editar PNGs sin salir de merger-index.html -->
+    <div class="tpm-modal-backdrop is-hidden" id="tpm-editor-modal">
+      <div class="tpm-modal-dialog">
+        <div class="tpm-modal-top">
+          <h4 id="tpm-modal-title">Editando Textura en TextureEditor</h4>
+          <div style="display:flex;gap:0.5rem;">
+            <button type="button" class="tpm-btn tpm-btn-primary" id="tpm-save-texture-modal">
+              Guardar en Pack Fusionado
+            </button>
+            <button type="button" class="tpm-btn" id="tpm-close-texture-modal">
+              Cerrar
+            </button>
+          </div>
+        </div>
+        <div class="tpm-modal-body" id="tpm-modal-editor-host"></div>
+      </div>
+    </div>
+
+    <script type="module">
+      import { TexturePackMerger } from './TexturePackMerger.js';
+      import { TextureEditor } from './TextureEditor.js';
+
+      document.addEventListener('DOMContentLoaded', () => {
+        const container = document.getElementById('merger-standalone-app');
+        const modal = document.getElementById('tpm-editor-modal');
+        const modalTitle = document.getElementById('tpm-modal-title');
+        const modalHost = document.getElementById('tpm-modal-editor-host');
+        const saveModalBtn = document.getElementById('tpm-save-texture-modal');
+        const closeModalBtn = document.getElementById('tpm-close-texture-modal');
+
+        let activeSaveCallback = null;
+        const embeddedEditor = new TextureEditor(modalHost, {
+          initialSize: 16,
+          initialColor: '#10B981',
+          seedInitialPattern: false,
+          showTopbar: false,
+        });
+
+        const merger = new TexturePackMerger(container, {
+          onEditTextureInEditor: ({ path, objectUrl, saveCallback }) => {
+            activeSaveCallback = saveCallback;
+            modalTitle.textContent = `Editando: ${path}`;
+            modal.classList.remove('is-hidden');
+
+            const img = new Image();
+            img.onload = () => {
+              const size = [16, 32, 64].includes(img.width) ? img.width : 16;
+              embeddedEditor.setCanvasSize(size);
+              embeddedEditor.ctx.clearRect(0, 0, embeddedEditor.canvasSize, embeddedEditor.canvasSize);
+              embeddedEditor.ctx.drawImage(img, 0, 0, embeddedEditor.canvasSize, embeddedEditor.canvasSize);
+              if (typeof embeddedEditor._pushHistoryState === 'function') {
+                embeddedEditor._pushHistoryState();
+              }
+              if (typeof embeddedEditor._updateTilePreview === 'function') {
+                embeddedEditor._updateTilePreview();
+              }
+            };
+            img.src = objectUrl;
+          },
+        });
+
+        saveModalBtn.addEventListener('click', () => {
+          embeddedEditor.canvas.toBlob((blob) => {
+            if (!blob || !activeSaveCallback) return;
+            blob.arrayBuffer().then((buf) => {
+              activeSaveCallback(new Uint8Array(buf));
+              modal.classList.add('is-hidden');
+            });
+          }, 'image/png');
+        });
+
+        closeModalBtn.addEventListener('click', () => {
+          modal.classList.add('is-hidden');
+        });
+
+        window.texturePackMerger = merger;
+      });
+    </script>
+  </body>
+</html>

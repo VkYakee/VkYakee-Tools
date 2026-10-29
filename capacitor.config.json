@@ -1,0 +1,9 @@
+{
+  "appId": "com.vkyakee.multitool",
+  "appName": "VkYakee Multi-Tool",
+  "webDir": "dist",
+  "bundledWebRuntime": false,
+  "server": {
+    "androidScheme": "https"
+  }
+}

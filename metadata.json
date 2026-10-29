@@ -1,0 +1,6 @@
+{
+  "name": "BlockForge — Editor de Texturas para Minecraft",
+  "description": "Módulo profesional en Vanilla JS y HTML5 Canvas para crear, editar, importar desde el repositorio oficial de Minecraft Bedrock y exportar texturas pixel-art en PNG.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

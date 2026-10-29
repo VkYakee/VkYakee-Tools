@@ -1,0 +1,1246 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@600;700&display=swap');
+
+:root {
+  --te-bg-canvas: #0b0f17;
+  --te-bg-surface: #131b26;
+  --te-bg-elevated: #1c2636;
+  --te-bg-glass: rgba(19, 27, 38, 0.92);
+  --te-border-subtle: rgba(255, 255, 255, 0.09);
+  --te-border-focus: #10b981;
+  --te-text-primary: #f8fafc;
+  --te-text-secondary: #94a3b8;
+  --te-text-muted: #64748b;
+  --te-accent-primary: #10b981;
+  --te-accent-primary-hover: #059669;
+  --te-accent-amber: #f59e0b;
+  --te-accent-purple: #a855f7;
+  --te-accent-danger: #ef4444;
+  --te-checker-a: #161f2c;
+  --te-checker-b: #0f1620;
+  --te-font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --te-font-display: 'Space Grotesk', sans-serif;
+  --te-font-mono: 'JetBrains Mono', monospace;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  min-height: 100vh;
+  background-color: var(--te-bg-canvas);
+  color: var(--te-text-primary);
+  font-family: var(--te-font-sans);
+  -webkit-font-smoothing: antialiased;
+  overscroll-behavior: none;
+}
+
+/* ==========================================================================
+   GLOBAL MULTI-TOOL NAVIGATION BAR (index.html Shell)
+   ========================================================================== */
+.te-topbar {
+  min-height: 52px;
+  height: auto;
+  background-color: var(--te-bg-surface);
+  border-bottom: 1px solid var(--te-border-subtle);
+  padding: 0.35rem 0.85rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.4rem;
+  position: relative;
+  z-index: 60;
+}
+
+.te-brand {
+  font-family: var(--te-font-display);
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--te-text-primary);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.te-topbar-nav {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.te-topbar-nav::-webkit-scrollbar {
+  display: none;
+}
+
+.te-nav-action {
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--te-text-secondary);
+  font-family: var(--te-font-sans);
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 0.4rem 0.6rem;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.te-nav-action:hover {
+  color: var(--te-text-primary);
+}
+
+.te-nav-action.is-active {
+  color: var(--te-accent-primary);
+  border-bottom-color: var(--te-accent-primary);
+}
+
+.te-topbar-cta {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+#app {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 100vh;
+}
+
+#tool-texture-editor:not(.is-hidden) {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.mt-tool-view.is-hidden {
+  display: none !important;
+}
+
+/* ==========================================================================
+   ESTUDIO DE TEXTURAS MOBILE-FIRST (APK TÁCTIL)
+   ========================================================================== */
+.te-studio-root {
+  position: relative;
+  flex: 1;
+  width: 100%;
+  height: calc(100dvh - 54px);
+  max-height: calc(100dvh - 54px);
+  min-height: 500px;
+  background: radial-gradient(circle at 50% 45%, #151f2e 0%, #0b0f17 78%);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+@media (max-width: 768px) {
+  .te-studio-root {
+    height: calc(100dvh - 96px);
+    max-height: calc(100dvh - 96px);
+  }
+}
+
+.te-studio-root.is-standalone {
+  height: 100dvh;
+  max-height: 100dvh;
+}
+
+/* --- 1. BARRA SUPERIOR TÁCTIL (Undo, Redo, Importar, Exportar, Menú ☰) --- */
+.te-studio-header {
+  min-height: 54px;
+  padding: 0.35rem 0.65rem;
+  background: var(--te-bg-glass);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--te-border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.35rem;
+  z-index: 30;
+  flex-shrink: 0;
+}
+
+.te-header-group {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.te-touch-btn {
+  min-height: 40px;
+  min-width: 40px;
+  padding: 0 0.65rem;
+  border-radius: 10px;
+  border: 1px solid var(--te-border-subtle);
+  background: var(--te-bg-elevated);
+  color: var(--te-text-primary);
+  font-family: var(--te-font-sans);
+  font-size: 0.76rem;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  cursor: pointer;
+  transition: transform 0.1s ease, background-color 0.15s ease, border-color 0.15s ease;
+  touch-action: manipulation;
+}
+
+.te-touch-btn:active:not(:disabled) {
+  transform: scale(0.95);
+}
+
+.te-touch-btn:hover:not(:disabled) {
+  border-color: rgba(255, 255, 255, 0.22);
+  background: #243146;
+}
+
+.te-touch-btn:disabled {
+  opacity: 0.38;
+  cursor: not-allowed;
+}
+
+.te-touch-btn svg {
+  width: 17px;
+  height: 17px;
+  flex-shrink: 0;
+}
+
+.te-touch-btn.is-primary {
+  background: var(--te-accent-primary);
+  border-color: var(--te-accent-primary);
+  color: #04130d;
+  font-weight: 700;
+}
+
+.te-touch-btn.is-primary:hover:not(:disabled) {
+  background: var(--te-accent-primary-hover);
+}
+
+.te-touch-btn.is-menu-toggle {
+  background: rgba(16, 185, 129, 0.14);
+  border-color: rgba(16, 185, 129, 0.4);
+  color: #34d399;
+}
+
+.te-touch-btn.is-menu-toggle.is-open {
+  background: var(--te-accent-primary);
+  border-color: var(--te-accent-primary);
+  color: #04130d;
+}
+
+/* --- 2. HUD SUPERIOR DE COORDENADAS Y ESTADO (X, Y, Color HEX, Zoom) --- */
+.te-hud-bar {
+  z-index: 22;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  padding: 0.35rem 0.65rem;
+  background: rgba(13, 19, 29, 0.9);
+  border-bottom: 1px solid var(--te-border-subtle);
+  font-family: var(--te-font-mono);
+  font-size: 0.72rem;
+  color: var(--te-text-secondary);
+  white-space: nowrap;
+  width: 100%;
+  overflow-x: auto;
+  flex-shrink: 0;
+  scrollbar-width: none;
+}
+
+.te-hud-bar::-webkit-scrollbar {
+  display: none;
+}
+
+.te-hud-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.te-hud-swatch {
+  width: 14px;
+  height: 14px;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+.te-hud-sep {
+  color: rgba(255, 255, 255, 0.16);
+}
+
+.te-hud-chip-btn {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: var(--te-text-primary);
+  border-radius: 6px;
+  padding: 0.15rem 0.42rem;
+  font-family: var(--te-font-mono);
+  font-size: 0.68rem;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.te-hud-chip-btn.is-active {
+  background: rgba(16, 185, 129, 0.2);
+  border-color: var(--te-accent-primary);
+  color: #34d399;
+}
+
+/* --- 3. ÁREA CENTRAL DEL LIENZO TÁCTIL (Pinch Zoom + Two-Finger Pan) --- */
+.te-canvas-stage {
+  position: relative;
+  flex: 1;
+  width: 100%;
+  height: 100%;
+  padding-bottom: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  touch-action: none;
+}
+
+.te-canvas-transform-wrap {
+  position: relative;
+  width: min(76vw, 52vh, 430px);
+  height: min(76vw, 52vh, 430px);
+  min-width: 230px;
+  min-height: 230px;
+  border-radius: 10px;
+  padding: 6px;
+  background: var(--te-bg-surface);
+  border: 2px solid rgba(255, 255, 255, 0.14);
+  box-shadow: 0 22px 55px rgba(0, 0, 0, 0.65);
+  transform-origin: center center;
+  will-change: transform;
+}
+
+.te-canvas-viewport {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 6px;
+  overflow: hidden;
+  background-image:
+    linear-gradient(45deg, var(--te-checker-a) 25%, transparent 25%),
+    linear-gradient(-45deg, var(--te-checker-a) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, var(--te-checker-a) 75%),
+    linear-gradient(-45deg, transparent 75%, var(--te-checker-a) 75%);
+  background-size: 20px 20px;
+  background-position: 0 0, 0 10px, 10px -10px, -10px 0;
+  background-color: var(--te-checker-b);
+  touch-action: none;
+}
+
+.te-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+  image-rendering: pixelated;
+  cursor: crosshair;
+  touch-action: none;
+}
+
+/* Cuadrícula superpuesta */
+.te-grid-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 1;
+  transition: opacity 0.15s ease;
+  background-size: calc(100% / var(--te-grid-size, 16)) calc(100% / var(--te-grid-size, 16));
+  background-image:
+    linear-gradient(to right, rgba(255, 255, 255, 0.11) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.11) 1px, transparent 1px);
+}
+
+.te-grid-overlay.is-hidden {
+  opacity: 0;
+}
+
+/* Guías de Simetría (Espejo H / V) */
+.te-symmetry-guide-h,
+.te-symmetry-guide-v {
+  position: absolute;
+  pointer-events: none;
+  z-index: 6;
+  display: none;
+}
+
+.te-symmetry-guide-h {
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 2px;
+  transform: translateX(-50%);
+  background: repeating-linear-gradient(
+    to bottom,
+    #38bdf8 0px,
+    #38bdf8 6px,
+    transparent 6px,
+    transparent 12px
+  );
+}
+
+.te-symmetry-guide-v {
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 2px;
+  transform: translateY(-50%);
+  background: repeating-linear-gradient(
+    to right,
+    #f472b6 0px,
+    #f472b6 6px,
+    transparent 6px,
+    transparent 12px
+  );
+}
+
+.te-symmetry-guide-h.is-visible,
+.te-symmetry-guide-v.is-visible {
+  display: block;
+}
+
+/* Marquee de Selección */
+.te-selection-box {
+  position: absolute;
+  pointer-events: none;
+  border: 2px dashed #38bdf8;
+  background: rgba(56, 189, 248, 0.15);
+  z-index: 8;
+  display: none;
+}
+
+.te-selection-box.is-visible {
+  display: block;
+}
+
+/* Barra contextual de Selección activa */
+.te-selection-actions {
+  position: absolute;
+  bottom: 84px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 25;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: rgba(15, 23, 42, 0.95);
+  border: 1px solid rgba(56, 189, 248, 0.5);
+  padding: 0.35rem 0.55rem;
+  border-radius: 10px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+}
+
+.te-selection-actions.is-hidden {
+  display: none !important;
+}
+
+.te-sel-btn {
+  background: var(--te-bg-elevated);
+  border: 1px solid var(--te-border-subtle);
+  color: var(--te-text-primary);
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 0.35rem 0.6rem;
+  border-radius: 7px;
+  cursor: pointer;
+}
+
+.te-sel-btn.is-danger {
+  color: #fca5a5;
+  border-color: rgba(239, 68, 68, 0.4);
+}
+
+/* Feedback visual de Cuentagotas Rápido (Long Press) */
+.te-toast-feedback {
+  position: absolute;
+  top: 98px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 28;
+  background: rgba(16, 185, 129, 0.95);
+  color: #04130d;
+  font-family: var(--te-font-sans);
+  font-size: 0.76rem;
+  font-weight: 700;
+  padding: 0.35rem 0.8rem;
+  border-radius: 999px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.45);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.18s ease;
+}
+
+.te-toast-feedback.is-visible {
+  opacity: 1;
+}
+
+/* --- 4. VENTANA FLOTANTE ARRASTRABLE DE PREVIEW EN VIVO --- */
+.te-floating-preview {
+  position: absolute;
+  top: 98px;
+  left: 12px;
+  z-index: 24;
+  width: 106px;
+  background: rgba(19, 27, 38, 0.94);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 12px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(10px);
+  overflow: hidden;
+  touch-action: none;
+}
+
+.te-floating-preview-header {
+  padding: 0.28rem 0.45rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid var(--te-border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.64rem;
+  font-weight: 700;
+  color: var(--te-text-secondary);
+  cursor: grab;
+}
+
+.te-floating-preview-body {
+  padding: 0.4rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.te-live-preview-canvas {
+  width: 68px;
+  height: 68px;
+  border-radius: 6px;
+  border: 1px solid var(--te-border-subtle);
+  background-color: var(--te-checker-b);
+  image-rendering: pixelated;
+  display: block;
+}
+
+.te-floating-preview-meta {
+  font-family: var(--te-font-mono);
+  font-size: 0.6rem;
+  color: var(--te-text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+/* --- 5. BARRA DE HERRAMIENTAS FLOTANTE INFERIOR (Thumb Dock) --- */
+.te-bottom-dock {
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 30;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 0.25rem;
+  padding: 0.38rem 0.42rem;
+  background: rgba(19, 27, 38, 0.96);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 16px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(14px);
+  width: calc(100vw - 16px);
+  max-width: 460px;
+}
+
+.te-dock-btn {
+  min-width: 0;
+  min-height: 50px;
+  padding: 0.3rem 0.2rem;
+  border-radius: 11px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--te-text-secondary);
+  font-family: var(--te-font-sans);
+  font-size: 0.64rem;
+  font-weight: 600;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.2rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  touch-action: manipulation;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.te-dock-btn svg {
+  width: 20px;
+  height: 20px;
+}
+
+.te-dock-btn:hover {
+  color: var(--te-text-primary);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.te-dock-btn.is-active {
+  background: rgba(16, 185, 129, 0.18);
+  border-color: var(--te-accent-primary);
+  color: #34d399;
+  box-shadow: 0 0 14px rgba(16, 185, 129, 0.22);
+}
+
+.te-dock-btn.is-symmetry-on {
+  background: rgba(56, 189, 248, 0.18);
+  border-color: #38bdf8;
+  color: #7dd3fc;
+}
+
+/* --- 6. MENÚ HAMBURGUESA (PANEL DESLIZABLE: CAPAS, PALETA, CONFIG, TIMELINE) --- */
+.te-drawer-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(3, 7, 14, 0.55);
+  z-index: 38;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.22s ease;
+}
+
+.te-drawer-backdrop.is-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.te-drawer-panel {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: min(390px, 92vw);
+  background: var(--te-bg-surface);
+  border-left: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: -18px 0 45px rgba(0, 0, 0, 0.65);
+  z-index: 40;
+  display: flex;
+  flex-direction: column;
+  transform: translateX(102%);
+  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.te-drawer-panel.is-open {
+  transform: translateX(0);
+}
+
+.te-drawer-header {
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid var(--te-border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--te-bg-elevated);
+}
+
+.te-drawer-title {
+  margin: 0;
+  font-family: var(--te-font-display);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--te-text-primary);
+}
+
+.te-drawer-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0.85rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.te-drawer-section {
+  background: rgba(11, 15, 23, 0.55);
+  border: 1px solid var(--te-border-subtle);
+  border-radius: 12px;
+  padding: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.te-section-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.te-section-title {
+  margin: 0;
+  font-size: 0.74rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--te-text-secondary);
+}
+
+.te-section-badge {
+  font-family: var(--te-font-mono);
+  font-size: 0.68rem;
+  color: #34d399;
+  background: rgba(16, 185, 129, 0.14);
+  border: 1px solid rgba(16, 185, 129, 0.35);
+  padding: 0.12rem 0.45rem;
+  border-radius: 6px;
+}
+
+/* --- SECCIÓN A: CONFIGURACIÓN DE PINCEL Y OPACIDAD (Botones Grandes + / -) --- */
+.te-stepper-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.te-stepper-btn {
+  min-width: 48px;
+  min-height: 44px;
+  border-radius: 10px;
+  border: 1px solid var(--te-border-subtle);
+  background: var(--te-bg-elevated);
+  color: var(--te-text-primary);
+  font-family: var(--te-font-mono);
+  font-size: 1.15rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  touch-action: manipulation;
+}
+
+.te-stepper-btn:active {
+  transform: scale(0.95);
+}
+
+.te-stepper-val {
+  flex: 1;
+  text-align: center;
+  font-family: var(--te-font-mono);
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--te-text-primary);
+  background: var(--te-bg-surface);
+  border: 1px solid var(--te-border-subtle);
+  border-radius: 8px;
+  padding: 0.55rem 0.4rem;
+}
+
+.te-brush-presets {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.4rem;
+}
+
+.te-preset-btn {
+  min-height: 40px;
+  border-radius: 8px;
+  border: 1px solid var(--te-border-subtle);
+  background: var(--te-bg-elevated);
+  color: var(--te-text-secondary);
+  font-family: var(--te-font-mono);
+  font-size: 0.76rem;
+  font-weight: 600;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.te-preset-btn.is-active {
+  background: rgba(16, 185, 129, 0.2);
+  border-color: var(--te-accent-primary);
+  color: #34d399;
+}
+
+/* --- SECCIÓN B: PALETA Y SELECTOR DE COLOR --- */
+.te-color-picker-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.te-color-input {
+  width: 52px;
+  height: 44px;
+  padding: 0;
+  border: 2px solid rgba(255, 255, 255, 0.25);
+  border-radius: 10px;
+  background: transparent;
+  cursor: pointer;
+}
+
+.te-hex-readout {
+  flex: 1;
+  height: 44px;
+  background: var(--te-bg-surface);
+  border: 1px solid var(--te-border-subtle);
+  border-radius: 10px;
+  padding: 0 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: var(--te-font-mono);
+  font-size: 0.84rem;
+  color: var(--te-text-primary);
+}
+
+.te-swatches-grid {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 0.38rem;
+}
+
+.te-swatch {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  min-height: 32px;
+  border-radius: 7px;
+  border: 2px solid rgba(255, 255, 255, 0.14);
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.te-swatch.is-active {
+  border-color: #ffffff;
+  transform: scale(1.08);
+  box-shadow: 0 0 0 2px var(--te-accent-primary);
+}
+
+/* --- SECCIÓN C: GESTIÓN DE CAPAS (OffscreenCanvas + Miniaturas) --- */
+.te-layers-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.42rem;
+  max-height: 210px;
+  overflow-y: auto;
+}
+
+.te-layer-item {
+  display: flex;
+  align-items: center;
+  gap: 0.48rem;
+  padding: 0.42rem 0.55rem;
+  border-radius: 9px;
+  background: var(--te-bg-elevated);
+  border: 1px solid var(--te-border-subtle);
+  cursor: pointer;
+}
+
+.te-layer-item.is-active {
+  border-color: var(--te-accent-primary);
+  background: rgba(16, 185, 129, 0.12);
+}
+
+.te-layer-thumb {
+  width: 34px;
+  height: 34px;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background-color: var(--te-checker-b);
+  image-rendering: pixelated;
+  flex-shrink: 0;
+}
+
+.te-layer-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.te-layer-name {
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: var(--te-text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.te-layer-sub {
+  font-family: var(--te-font-mono);
+  font-size: 0.64rem;
+  color: var(--te-text-muted);
+}
+
+.te-layer-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.22rem;
+}
+
+.te-mini-btn {
+  min-width: 32px;
+  min-height: 32px;
+  border-radius: 7px;
+  border: 1px solid var(--te-border-subtle);
+  background: var(--te-bg-surface);
+  color: var(--te-text-secondary);
+  font-size: 0.72rem;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.te-mini-btn:hover:not(:disabled) {
+  color: var(--te-text-primary);
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+.te-mini-btn.is-danger {
+  color: #fca5a5;
+}
+
+.te-mini-btn.is-muted-eye {
+  opacity: 0.45;
+}
+
+/* --- SECCIÓN D: VARIANTES DE TEXTURA (terrain_texture.json / flipbook_textures.json) --- */
+.te-variants-box {
+  display: flex;
+  flex-direction: column;
+  gap: 0.48rem;
+}
+
+.te-variants-quick-blocks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.32rem;
+}
+
+.te-variant-block-chip {
+  background: var(--te-bg-elevated);
+  border: 1px solid var(--te-border-subtle);
+  color: var(--te-text-secondary);
+  border-radius: 7px;
+  padding: 0.28rem 0.52rem;
+  font-family: var(--te-font-mono);
+  font-size: 0.68rem;
+  cursor: pointer;
+}
+
+.te-variant-block-chip.is-active {
+  background: rgba(16, 185, 129, 0.16);
+  border-color: var(--te-accent-primary);
+  color: #34d399;
+}
+
+.te-variant-select {
+  width: 100%;
+  min-height: 40px;
+  background: var(--te-bg-elevated);
+  border: 1px solid var(--te-border-subtle);
+  color: var(--te-text-primary);
+  border-radius: 8px;
+  padding: 0.4rem 0.55rem;
+  font-family: var(--te-font-mono);
+  font-size: 0.74rem;
+}
+
+.te-variants-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(64px, 1fr));
+  gap: 0.38rem;
+}
+
+.te-variant-thumb-btn {
+  background: var(--te-bg-elevated);
+  border: 1px solid var(--te-border-subtle);
+  border-radius: 8px;
+  padding: 0.32rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+  cursor: pointer;
+  color: var(--te-text-secondary);
+  font-family: var(--te-font-mono);
+  font-size: 0.62rem;
+}
+
+.te-variant-thumb-btn.is-active {
+  border-color: var(--te-accent-primary);
+  background: rgba(16, 185, 129, 0.14);
+  color: #34d399;
+}
+
+.te-variant-thumb-img {
+  width: 32px;
+  height: 32px;
+  image-rendering: pixelated;
+  border-radius: 4px;
+}
+
+/* --- SECCIÓN E: LÍNEA DE TIEMPO HORIZONTAL (TIMELINE EN PARTE INFERIOR DEL MENÚ) --- */
+.te-drawer-timeline {
+  border-top: 1px solid var(--te-border-subtle);
+  background: var(--te-bg-elevated);
+  padding: 0.7rem 0.85rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.te-timeline-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.35rem;
+  flex-wrap: wrap;
+}
+
+.te-timeline-strip {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  overflow-x: auto;
+  padding-bottom: 0.25rem;
+}
+
+.te-frame-card {
+  min-width: 62px;
+  padding: 0.35rem;
+  border-radius: 9px;
+  background: var(--te-bg-surface);
+  border: 1px solid var(--te-border-subtle);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.22rem;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.te-frame-card.is-active {
+  border-color: var(--te-accent-amber);
+  background: rgba(245, 158, 11, 0.16);
+}
+
+.te-frame-thumb {
+  width: 38px;
+  height: 38px;
+  border-radius: 5px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background-color: var(--te-checker-b);
+  image-rendering: pixelated;
+}
+
+.te-frame-label {
+  font-family: var(--te-font-mono);
+  font-size: 0.62rem;
+  color: var(--te-text-secondary);
+}
+
+/* --- 7. MODAL DE IMPORTACIÓN (LOCAL PNG + GITHUB MOJANG REPOSITORY) --- */
+.te-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(4, 8, 15, 0.78);
+  backdrop-filter: blur(8px);
+  z-index: 90;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.18s ease;
+}
+
+.te-modal-backdrop.is-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.te-modal-dialog {
+  width: 100%;
+  max-width: 520px;
+  max-height: 88vh;
+  background: var(--te-bg-surface);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 16px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.7);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.te-modal-header {
+  padding: 0.9rem 1.1rem;
+  border-bottom: 1px solid var(--te-border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.te-modal-title {
+  margin: 0;
+  font-family: var(--te-font-display);
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.te-modal-body {
+  padding: 1rem 1.1rem;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.te-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.te-form-label {
+  font-size: 0.74rem;
+  font-weight: 600;
+  color: var(--te-text-secondary);
+}
+
+.te-input,
+.te-select {
+  width: 100%;
+  min-height: 44px;
+  background: var(--te-bg-elevated);
+  border: 1px solid var(--te-border-subtle);
+  border-radius: 10px;
+  padding: 0 0.75rem;
+  color: var(--te-text-primary);
+  font-family: var(--te-font-sans);
+  font-size: 0.85rem;
+}
+
+.te-quick-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.38rem;
+}
+
+.te-chip {
+  min-height: 34px;
+  padding: 0.25rem 0.6rem;
+  border-radius: 8px;
+  border: 1px solid var(--te-border-subtle);
+  background: var(--te-bg-elevated);
+  color: var(--te-text-secondary);
+  font-family: var(--te-font-mono);
+  font-size: 0.72rem;
+  cursor: pointer;
+}
+
+.te-chip:hover {
+  color: var(--te-text-primary);
+  border-color: var(--te-accent-primary);
+}
+
+.te-status-banner {
+  padding: 0.65rem 0.8rem;
+  border-radius: 10px;
+  font-size: 0.78rem;
+  display: none;
+}
+
+.te-status-banner.is-visible {
+  display: block;
+}
+
+.te-status-banner.is-error {
+  background: rgba(239, 68, 68, 0.14);
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  color: #fca5a5;
+}
+
+.te-status-banner.is-success {
+  background: rgba(16, 185, 129, 0.14);
+  border: 1px solid rgba(16, 185, 129, 0.4);
+  color: #6ee7b7;
+}
+
+.te-btn {
+  min-height: 40px;
+  padding: 0.45rem 0.85rem;
+  border-radius: 9px;
+  border: 1px solid var(--te-border-subtle);
+  background: var(--te-bg-elevated);
+  color: var(--te-text-primary);
+  font-family: var(--te-font-sans);
+  font-size: 0.8rem;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  cursor: pointer;
+}
+
+.te-btn-primary {
+  background: var(--te-accent-primary);
+  border-color: var(--te-accent-primary);
+  color: #04130d;
+  font-weight: 700;
+}
+
+.te-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+@media (max-width: 640px) {
+  .te-touch-btn span.te-hide-xs {
+    display: none;
+  }
+  .te-floating-preview {
+    width: 96px;
+    top: 104px;
+    left: 8px;
+  }
+  .te-live-preview-canvas {
+    width: 62px;
+    height: 62px;
+  }
+}

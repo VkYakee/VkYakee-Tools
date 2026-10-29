@@ -1,0 +1,793 @@
+/**
+ * @file merger.css
+ * @description Estilos en modo oscuro para el módulo Fusionador de Paquetes de Texturas (TexturePackMerger).
+ * Preparado para ejecución aislada (merger-index.html) e integración en VkYakee Multi-Tool APK.
+ */
+
+.tpm-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1.15rem;
+  padding: 1.25rem 1.5rem 2rem;
+  max-width: 1580px;
+  width: 100%;
+  margin: 0 auto;
+  color: var(--te-text-primary, #f8fafc);
+  font-family: var(--te-font-sans, system-ui, -apple-system, sans-serif);
+}
+
+/* Cabecera superior con carga de paquetes demo y resumen */
+.tpm-header-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  background-color: var(--te-bg-surface, #111827);
+  border: 1px solid var(--te-border, #1e293b);
+  border-radius: var(--te-radius-lg, 12px);
+}
+
+.tpm-header-banner h2 {
+  margin: 0 0 0.25rem 0;
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: #f8fafc;
+}
+
+.tpm-header-banner p {
+  margin: 0;
+  font-size: 0.82rem;
+  color: var(--te-text-secondary, #94a3b8);
+}
+
+.tpm-header-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Layout principal de 3 zonas: Prioridad (Izq) | Árbol de Archivos (Centro) | Inspector y Edición (Der) */
+.tpm-main-grid {
+  display: grid;
+  grid-template-columns: 360px minmax(0, 1fr) 410px;
+  gap: 1.15rem;
+  align-items: start;
+}
+
+.tpm-card {
+  background-color: var(--te-bg-surface, #111827);
+  border: 1px solid var(--te-border, #1e293b);
+  border-radius: var(--te-radius-lg, 12px);
+  padding: 1.05rem 1.15rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  min-width: 0;
+}
+
+.tpm-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.65rem;
+  padding-bottom: 0.6rem;
+  border-bottom: 1px solid var(--te-border, #1e293b);
+}
+
+.tpm-card-header h3 {
+  margin: 0;
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: #f8fafc;
+}
+
+.tpm-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.2rem 0.52rem;
+  background-color: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.35);
+  border-radius: 6px;
+  font-family: var(--te-font-mono, monospace);
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: #34d399;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+}
+
+.tpm-badge.is-amber {
+  background-color: rgba(245, 158, 11, 0.12);
+  border-color: rgba(245, 158, 11, 0.38);
+  color: #fcd34d;
+}
+
+/* Botones del módulo */
+.tpm-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  min-height: 36px;
+  padding: 0.42rem 0.8rem;
+  background-color: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 8px;
+  color: #e2e8f0;
+  font-family: var(--te-font-sans, sans-serif);
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 140ms ease, border-color 140ms ease, color 140ms ease, transform 100ms ease;
+}
+
+.tpm-btn:hover:not(:disabled) {
+  background-color: #283548;
+  border-color: #475569;
+  color: #ffffff;
+}
+
+.tpm-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.tpm-btn-primary {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  border-color: #10b981;
+  color: #052e16;
+  font-weight: 700;
+  box-shadow: 0 6px 16px -6px rgba(16, 185, 129, 0.5);
+}
+
+.tpm-btn-primary:hover:not(:disabled) {
+  background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
+  border-color: #34d399;
+  color: #022c22;
+}
+
+.tpm-btn-danger {
+  background-color: rgba(239, 68, 68, 0.12);
+  border-color: rgba(239, 68, 68, 0.4);
+  color: #fca5a5;
+}
+
+.tpm-btn-danger:hover:not(:disabled) {
+  background-color: rgba(239, 68, 68, 0.22);
+  border-color: #ef4444;
+  color: #fecaca;
+}
+
+.tpm-btn-accent-outline {
+  background-color: rgba(16, 185, 129, 0.12);
+  border-color: rgba(16, 185, 129, 0.45);
+  color: #34d399;
+}
+
+.tpm-btn-accent-outline:hover:not(:disabled) {
+  background-color: rgba(16, 185, 129, 0.22);
+  border-color: #10b981;
+  color: #6ee7b7;
+}
+
+/* Dropzone de Carga Múltiple (.mcpack / .zip) */
+.tpm-dropzone {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 1.15rem 0.9rem;
+  background-color: #0b111d;
+  border: 2px dashed #334155;
+  border-radius: 10px;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 150ms ease, background-color 150ms ease;
+}
+
+.tpm-dropzone input[type="file"] {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.tpm-dropzone:hover,
+.tpm-dropzone.is-dragover {
+  border-color: #10b981;
+  background-color: rgba(16, 185, 129, 0.07);
+}
+
+.tpm-dropzone-title {
+  font-size: 0.86rem;
+  font-weight: 700;
+  color: #f8fafc;
+}
+
+.tpm-dropzone-sub {
+  font-family: var(--te-font-mono, monospace);
+  font-size: 0.7rem;
+  color: #94a3b8;
+  line-height: 1.35;
+}
+
+/* Lista de Prioridad Drag & Drop de Paquetes */
+.tpm-priority-hint {
+  font-size: 0.72rem;
+  color: #94a3b8;
+  line-height: 1.35;
+  padding: 0.45rem 0.6rem;
+  background-color: rgba(15, 23, 42, 0.65);
+  border: 1px solid #1e293b;
+  border-radius: 8px;
+}
+
+.tpm-pack-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-height: 310px;
+  overflow-y: auto;
+}
+
+.tpm-pack-item {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.6rem 0.7rem;
+  background-color: #0b111d;
+  border: 1px solid #263348;
+  border-radius: 9px;
+  cursor: grab;
+  transition: border-color 140ms ease, background-color 140ms ease, transform 120ms ease;
+}
+
+.tpm-pack-item:hover {
+  border-color: #475569;
+}
+
+.tpm-pack-item.is-dragging {
+  opacity: 0.55;
+  border-color: #10b981;
+  background-color: rgba(16, 185, 129, 0.1);
+}
+
+.tpm-pack-rank {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  background-color: #1e293b;
+  border: 1px solid #334155;
+  font-family: var(--te-font-mono, monospace);
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #cbd5e1;
+  flex-shrink: 0;
+}
+
+.tpm-pack-item:first-child .tpm-pack-rank {
+  background-color: rgba(16, 185, 129, 0.18);
+  border-color: #10b981;
+  color: #34d399;
+}
+
+.tpm-pack-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.tpm-pack-name {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #f8fafc;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tpm-pack-meta {
+  font-family: var(--te-font-mono, monospace);
+  font-size: 0.68rem;
+  color: #94a3b8;
+}
+
+.tpm-pack-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.tpm-icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  background-color: #162032;
+  border: 1px solid #29384e;
+  border-radius: 6px;
+  color: #cbd5e1;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: all 120ms ease;
+}
+
+.tpm-icon-btn:hover:not(:disabled) {
+  background-color: #25344d;
+  color: #ffffff;
+  border-color: #475569;
+}
+
+.tpm-icon-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+/* Configuración del Manifiesto Final */
+.tpm-form-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.tpm-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.tpm-field label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #94a3b8;
+}
+
+.tpm-input {
+  width: 100%;
+  min-height: 36px;
+  padding: 0.4rem 0.65rem;
+  background-color: #0b111d;
+  border: 1px solid #2b3950;
+  border-radius: 7px;
+  color: #f8fafc;
+  font-size: 0.8rem;
+  font-family: var(--te-font-sans, sans-serif);
+}
+
+.tpm-input:focus {
+  outline: 2px solid #10b981;
+  border-color: transparent;
+}
+
+/* Explorador del Árbol de Archivos (Columna Central) */
+.tpm-explorer-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.tpm-filter-pills {
+  display: flex;
+  gap: 0.35rem;
+  flex-wrap: wrap;
+}
+
+.tpm-filter-pill {
+  padding: 0.28rem 0.6rem;
+  background-color: #0b111d;
+  border: 1px solid #263348;
+  border-radius: 6px;
+  color: #94a3b8;
+  font-size: 0.72rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.tpm-filter-pill.is-active {
+  background-color: rgba(16, 185, 129, 0.14);
+  border-color: #10b981;
+  color: #34d399;
+}
+
+.tpm-tree-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.22rem;
+  max-height: 510px;
+  overflow-y: auto;
+  padding: 0.4rem;
+  background-color: #0b111d;
+  border: 1px solid #222f43;
+  border-radius: 9px;
+}
+
+.tpm-folder-header {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.5rem;
+  margin-top: 0.25rem;
+  font-family: var(--te-font-mono, monospace);
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.tpm-tree-file {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.45rem 0.6rem;
+  border-radius: 7px;
+  border: 1px solid transparent;
+  background-color: transparent;
+  color: #e2e8f0;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 120ms ease, border-color 120ms ease;
+}
+
+.tpm-tree-file:hover {
+  background-color: #151f32;
+  border-color: #26354d;
+}
+
+.tpm-tree-file.is-selected {
+  background-color: rgba(16, 185, 129, 0.14);
+  border-color: #10b981;
+}
+
+.tpm-file-thumb {
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  background-color: #1e293b;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  image-rendering: pixelated;
+  object-fit: contain;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--te-font-mono, monospace);
+  font-size: 0.62rem;
+  font-weight: 700;
+  color: #94a3b8;
+}
+
+.tpm-file-path {
+  flex: 1;
+  font-family: var(--te-font-mono, monospace);
+  font-size: 0.75rem;
+  color: #f1f5f9;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tpm-file-origin-tag {
+  padding: 0.14rem 0.42rem;
+  border-radius: 5px;
+  font-family: var(--te-font-mono, monospace);
+  font-size: 0.64rem;
+  font-weight: 600;
+  background-color: #1e293b;
+  color: #94a3b8;
+  white-space: nowrap;
+}
+
+.tpm-file-origin-tag.is-merged {
+  background-color: rgba(245, 158, 11, 0.15);
+  border: 1px solid rgba(245, 158, 11, 0.4);
+  color: #fcd34d;
+}
+
+.tpm-file-origin-tag.is-edited {
+  background-color: rgba(16, 185, 129, 0.16);
+  border: 1px solid rgba(16, 185, 129, 0.4);
+  color: #6ee7b7;
+}
+
+.tpm-variant-count-badge {
+  padding: 0.14rem 0.44rem;
+  border-radius: 5px;
+  font-family: var(--te-font-mono, monospace);
+  font-size: 0.64rem;
+  font-weight: 700;
+  background-color: rgba(56, 189, 248, 0.15);
+  border: 1px solid rgba(56, 189, 248, 0.42);
+  color: #7dd3fc;
+  white-space: nowrap;
+}
+
+.tpm-flipbook-badge {
+  padding: 0.14rem 0.44rem;
+  border-radius: 5px;
+  font-family: var(--te-font-mono, monospace);
+  font-size: 0.64rem;
+  font-weight: 700;
+  background-color: rgba(168, 85, 247, 0.16);
+  border: 1px solid rgba(168, 85, 247, 0.42);
+  color: #d8b4fe;
+  white-space: nowrap;
+}
+
+.tpm-variants-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.65rem 0.75rem;
+  background-color: #0b111d;
+  border: 1px solid #26354d;
+  border-radius: 9px;
+}
+
+.tpm-variants-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: #f8fafc;
+}
+
+.tpm-variants-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.38rem;
+}
+
+.tpm-variant-item {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.4rem 0.55rem;
+  background-color: #111827;
+  border: 1px solid #1e293b;
+  border-radius: 7px;
+}
+
+.tpm-variant-item.is-active {
+  border-color: #10b981;
+  background-color: rgba(16, 185, 129, 0.1);
+}
+
+.tpm-variant-meta {
+  flex: 1;
+  min-width: 0;
+}
+
+.tpm-variant-title {
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: #f1f5f9;
+}
+
+.tpm-variant-sub {
+  font-family: var(--te-font-mono, monospace);
+  font-size: 0.66rem;
+  color: #94a3b8;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tpm-variant-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.tpm-icon-btn.is-danger:hover:not(:disabled) {
+  background-color: rgba(239, 68, 68, 0.22);
+  border-color: #ef4444;
+  color: #fca5a5;
+}
+
+/* Panel Derecho: Inspector y Vista Previa / Edición */
+.tpm-inspector-box {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.tpm-preview-stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 220px;
+  padding: 1rem;
+  background-color: #0b111d;
+  background-image:
+    linear-gradient(45deg, #131c2e 25%, transparent 25%),
+    linear-gradient(-45deg, #131c2e 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, #131c2e 75%),
+    linear-gradient(-45deg, transparent 75%, #131c2e 75%);
+  background-size: 20px 20px;
+  background-position: 0 0, 0 10px, 10px -10px, -10px 0;
+  border: 1px solid #2b3950;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.tpm-preview-img {
+  width: 148px;
+  height: 148px;
+  image-rendering: pixelated;
+  object-fit: contain;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.55);
+}
+
+.tpm-json-viewer {
+  width: 100%;
+  max-height: 240px;
+  margin: 0;
+  padding: 0.75rem;
+  background-color: #070b13;
+  border: 1px solid #222f43;
+  border-radius: 8px;
+  font-family: var(--te-font-mono, monospace);
+  font-size: 0.72rem;
+  color: #a7f3d0;
+  overflow: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.tpm-inspector-meta {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.45rem;
+}
+
+.tpm-meta-cell {
+  padding: 0.45rem 0.6rem;
+  background-color: #0b111d;
+  border: 1px solid #222f43;
+  border-radius: 7px;
+}
+
+.tpm-meta-label {
+  font-size: 0.66rem;
+  color: #94a3b8;
+}
+
+.tpm-meta-val {
+  font-family: var(--te-font-mono, monospace);
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: #f8fafc;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tpm-file-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+}
+
+.tpm-file-actions .tpm-btn-full {
+  grid-column: 1 / -1;
+}
+
+.tpm-replace-label {
+  position: relative;
+  overflow: hidden;
+}
+
+.tpm-replace-label input[type="file"] {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.tpm-status-banner {
+  padding: 0.6rem 0.8rem;
+  border-radius: 8px;
+  font-size: 0.76rem;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.tpm-status-banner.is-ok {
+  background-color: rgba(16, 185, 129, 0.1);
+  border: 1px solid rgba(16, 185, 129, 0.35);
+  color: #6ee7b7;
+}
+
+.tpm-status-banner.is-warn {
+  background-color: rgba(245, 158, 11, 0.12);
+  border: 1px solid rgba(245, 158, 11, 0.4);
+  color: #fcd34d;
+}
+
+/* Modal embebido para editar PNG con TextureEditor en modo aislado */
+.tpm-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 950;
+  background-color: rgba(5, 8, 15, 0.84);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.tpm-modal-backdrop.is-hidden {
+  display: none;
+}
+
+.tpm-modal-dialog {
+  width: min(1220px, 96vw);
+  max-height: 92vh;
+  background-color: #0f172a;
+  border: 1px solid #334155;
+  border-radius: 14px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.75);
+}
+
+.tpm-modal-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1.15rem;
+  background-color: #111827;
+  border-bottom: 1px solid #1e293b;
+}
+
+.tpm-modal-top h4 {
+  margin: 0;
+  font-size: 0.92rem;
+  color: #f8fafc;
+}
+
+.tpm-modal-body {
+  flex: 1;
+  overflow-y: auto;
+}
+
+@media (max-width: 1220px) {
+  .tpm-main-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .tpm-wrapper {
+    padding: 0.75rem;
+  }
+
+  .tpm-card {
+    padding: 0.85rem;
+  }
+
+  .tpm-file-actions {
+    grid-template-columns: 1fr;
+  }
+}

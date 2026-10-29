@@ -1,0 +1,556 @@
+/**
+ * @file converter.css
+ * @description Estilos en modo oscuro para el módulo Conversor Universal de Esquemáticos (SchematicConverter).
+ * Diseñado para integrarse de forma modular en la APK Multi-Tool de VkYakee.
+ */
+
+.sc-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1.15rem;
+  padding: 1.25rem 1.5rem 2rem;
+  max-width: 1560px;
+  width: 100%;
+  margin: 0 auto;
+  color: var(--te-text-primary, #f8fafc);
+  font-family: var(--te-font-sans, system-ui, -apple-system, sans-serif);
+}
+
+/* Cabecera superior con plantillas rápidas */
+.sc-header-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  background-color: var(--te-bg-surface, #111827);
+  border: 1px solid var(--te-border, #1e293b);
+  border-radius: var(--te-radius-lg, 12px);
+}
+
+.sc-header-banner h2 {
+  margin: 0 0 0.25rem 0;
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: #f8fafc;
+}
+
+.sc-header-banner p {
+  margin: 0;
+  font-size: 0.82rem;
+  color: var(--te-text-secondary, #94a3b8);
+}
+
+.sc-preset-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+/* Cuadrícula principal de 2 columnas simétricas/balanceadas */
+.sc-main-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+  gap: 1.25rem;
+  align-items: start;
+}
+
+.sc-card {
+  background-color: var(--te-bg-surface, #111827);
+  border: 1px solid var(--te-border, #1e293b);
+  border-radius: var(--te-radius-lg, 12px);
+  padding: 1.1rem 1.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  min-width: 0;
+}
+
+.sc-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding-bottom: 0.65rem;
+  border-bottom: 1px solid var(--te-border, #1e293b);
+}
+
+.sc-card-header h3 {
+  margin: 0;
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: #f8fafc;
+}
+
+.sc-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.sc-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.22rem 0.55rem;
+  background-color: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.35);
+  border-radius: 6px;
+  font-family: var(--te-font-mono, monospace);
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: #34d399;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+/* Botones táctiles oscuros */
+.sc-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  min-height: 38px;
+  padding: 0.45rem 0.85rem;
+  background-color: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 8px;
+  color: #e2e8f0;
+  font-family: var(--te-font-sans, sans-serif);
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 140ms ease, border-color 140ms ease, color 140ms ease, transform 100ms ease;
+}
+
+.sc-btn:hover {
+  background-color: #283548;
+  border-color: #475569;
+  color: #ffffff;
+}
+
+.sc-btn:active {
+  transform: translateY(1px);
+}
+
+.sc-btn-primary {
+  width: 100%;
+  min-height: 44px;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  border-color: #10b981;
+  color: #052e16;
+  font-size: 0.88rem;
+  font-weight: 700;
+  box-shadow: 0 6px 18px -6px rgba(16, 185, 129, 0.5);
+}
+
+.sc-btn-primary:hover {
+  background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
+  border-color: #34d399;
+  color: #022c22;
+}
+
+/* Zona Drag & Drop de Carga de Esquemático */
+.sc-dropzone {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  padding: 1.35rem 1rem;
+  background-color: #0b111d;
+  border: 2px dashed #334155;
+  border-radius: 10px;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 150ms ease, background-color 150ms ease;
+}
+
+.sc-dropzone input[type="file"] {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.sc-dropzone:hover,
+.sc-dropzone.is-dragover {
+  border-color: #10b981;
+  background-color: rgba(16, 185, 129, 0.07);
+}
+
+.sc-dropzone-title {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #f8fafc;
+}
+
+.sc-dropzone-sub {
+  font-family: var(--te-font-mono, monospace);
+  font-size: 0.72rem;
+  color: #94a3b8;
+  line-height: 1.4;
+}
+
+.sc-format-pills {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.4rem;
+  margin-top: 0.25rem;
+}
+
+.sc-format-pill {
+  padding: 0.18rem 0.5rem;
+  border-radius: 6px;
+  font-size: 0.68rem;
+  font-weight: 600;
+  background-color: #1e293b;
+  border: 1px solid #334155;
+  color: #cbd5e1;
+}
+
+.sc-format-pill.is-bedrock {
+  border-color: rgba(16, 185, 129, 0.4);
+  color: #6ee7b7;
+}
+
+.sc-format-pill.is-java {
+  border-color: rgba(245, 158, 11, 0.4);
+  color: #fcd34d;
+}
+
+.sc-format-pill.is-3d {
+  border-color: rgba(56, 189, 248, 0.4);
+  color: #7dd3fc;
+}
+
+/* Transformaciones pre-conversión */
+.sc-transform-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.5rem;
+}
+
+.sc-toggle-btn {
+  min-height: 40px;
+  padding: 0.45rem 0.7rem;
+  background-color: #0b111d;
+  border: 1px solid #334155;
+  border-radius: 8px;
+  color: #cbd5e1;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 140ms ease;
+}
+
+.sc-toggle-btn:hover {
+  border-color: #475569;
+  color: #ffffff;
+}
+
+.sc-toggle-btn.is-active {
+  background-color: rgba(16, 185, 129, 0.16);
+  border-color: #10b981;
+  color: #34d399;
+}
+
+/* Grupos de formatos de destino */
+.sc-target-groups {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.sc-target-group-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #94a3b8;
+  margin-bottom: 0.4rem;
+}
+
+.sc-target-chips {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.45rem;
+}
+
+.sc-target-chip {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 0.15rem;
+  min-height: 50px;
+  padding: 0.45rem 0.65rem;
+  background-color: #0b111d;
+  border: 1px solid #263348;
+  border-radius: 8px;
+  text-align: left;
+  cursor: pointer;
+  transition: all 140ms ease;
+}
+
+.sc-target-chip:hover {
+  border-color: #475569;
+  background-color: #131c2e;
+}
+
+.sc-target-chip.is-active {
+  background-color: rgba(16, 185, 129, 0.14);
+  border-color: #10b981;
+  box-shadow: inset 0 0 0 1px rgba(16, 185, 129, 0.35);
+}
+
+.sc-target-ext {
+  font-family: var(--te-font-mono, monospace);
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #f8fafc;
+}
+
+.sc-target-chip.is-active .sc-target-ext {
+  color: #34d399;
+}
+
+.sc-target-desc {
+  font-size: 0.66rem;
+  color: #94a3b8;
+  line-height: 1.2;
+}
+
+.sc-actions-bar {
+  margin-top: 0.25rem;
+}
+
+.sc-status-banner {
+  padding: 0.6rem 0.8rem;
+  border-radius: 8px;
+  font-size: 0.76rem;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.sc-status-banner.is-ok {
+  background-color: rgba(16, 185, 129, 0.1);
+  border: 1px solid rgba(16, 185, 129, 0.35);
+  color: #6ee7b7;
+}
+
+.sc-status-banner.is-warn {
+  background-color: rgba(245, 158, 11, 0.12);
+  border: 1px solid rgba(245, 158, 11, 0.4);
+  color: #fcd34d;
+}
+
+/* Visor 3D del Esquemático */
+.sc-viewport-frame {
+  position: relative;
+  width: 100%;
+  height: 310px;
+  background-color: #0b111d;
+  background-image:
+    radial-gradient(circle at 50% 42%, rgba(16, 185, 129, 0.14), transparent 65%);
+  border: 1px solid #334155;
+  border-radius: 10px;
+  overflow: hidden;
+  touch-action: none;
+}
+
+.sc-preview-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+  cursor: grab;
+}
+
+.sc-preview-canvas:active {
+  cursor: grabbing;
+}
+
+.sc-viewport-overlay {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  right: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  pointer-events: none;
+}
+
+.sc-viewport-tag {
+  background-color: rgba(15, 23, 42, 0.88);
+  border: 1px solid #334155;
+  padding: 0.22rem 0.55rem;
+  border-radius: 6px;
+  font-family: var(--te-font-mono, monospace);
+  font-size: 0.72rem;
+  color: #f8fafc;
+}
+
+.sc-layer-bar {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  right: 10px;
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.4rem 0.65rem;
+  background-color: rgba(15, 23, 42, 0.9);
+  border: 1px solid #334155;
+  border-radius: 8px;
+}
+
+.sc-layer-bar label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #cbd5e1;
+  white-space: nowrap;
+}
+
+.sc-layer-bar input[type="range"] {
+  flex: 1;
+  accent-color: #10b981;
+  cursor: pointer;
+}
+
+/* Estadísticas Matemáticas y Lista de Bloques / Mapeo GeyserMC */
+.sc-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.5rem;
+}
+
+.sc-stat-box {
+  background-color: #0b111d;
+  border: 1px solid #263348;
+  border-radius: 8px;
+  padding: 0.55rem 0.65rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.18rem;
+}
+
+.sc-stat-label {
+  font-size: 0.68rem;
+  color: #94a3b8;
+}
+
+.sc-stat-value {
+  font-family: var(--te-font-mono, monospace);
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #f8fafc;
+  font-variant-numeric: tabular-nums;
+}
+
+.sc-stat-value.is-accent {
+  color: #34d399;
+}
+
+.sc-stat-value.is-amber {
+  color: #fbbf24;
+}
+
+.sc-block-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  max-height: 250px;
+  overflow-y: auto;
+}
+
+.sc-block-item {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.48rem 0.65rem;
+  background-color: #0b111d;
+  border: 1px solid #263348;
+  border-radius: 8px;
+  font-size: 0.76rem;
+}
+
+.sc-block-swatch {
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  flex-shrink: 0;
+}
+
+.sc-block-name {
+  flex: 1;
+  font-family: var(--te-font-mono, monospace);
+  color: #e2e8f0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sc-block-count {
+  font-family: var(--te-font-mono, monospace);
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #34d399;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+@media (max-width: 1080px) {
+  .sc-main-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .sc-stats-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.sc-col-left,
+.sc-col-right {
+  min-width: 0;
+  max-width: 100%;
+}
+
+@media (max-width: 768px) {
+  .te-topbar {
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    padding: 0.65rem 0.85rem;
+  }
+
+  .te-topbar-nav {
+    order: 3;
+    width: 100%;
+    gap: 0.85rem;
+    padding-bottom: 0.15rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .sc-wrapper {
+    padding: 0.75rem;
+  }
+
+  .sc-card {
+    padding: 0.85rem;
+  }
+
+  .sc-target-chips {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .sc-transform-row {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

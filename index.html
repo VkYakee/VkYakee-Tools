@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>BlockForge — Editor de Texturas para Minecraft</title>
+    <meta
+      name="description"
+      content="Módulo profesional en Vanilla JS y HTML5 Canvas para crear, editar, importar desde el repositorio oficial de Minecraft Bedrock y exportar texturas pixel-art en PNG."
+    />
+    <meta property="og:title" content="BlockForge — Editor de Texturas para Minecraft" />
+    <meta
+      property="og:description"
+      content="Módulo profesional en Vanilla JS y HTML5 Canvas para crear, editar, importar desde el repositorio oficial de Minecraft Bedrock y exportar texturas pixel-art en PNG."
+    />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="stylesheet" href="/texture-editor.css" />
+    <link rel="stylesheet" href="/converter.css" />
+    <link rel="stylesheet" href="/merger.css" />
+  </head>
+  <body>
+    <!-- Contenedor Multi-Tool APK (VkYakee): Editor de Texturas + HoloPrint + Conversor + Fusionador -->
+    <div id="app">
+      <!-- Barra Superior Unificada (Top Bar Contract: 3 Zonas) -->
+      <header class="te-topbar">
+        <a href="#multitool" class="te-brand" aria-label="VkYakee Multi-Tool APK">
+          VkYakee Multi-Tool
+        </a>
+
+        <nav class="te-topbar-nav" aria-label="Selector de herramientas de la APK">
+          <button
+            type="button"
+            class="te-nav-action is-active"
+            data-switch-tool="texture-editor"
+            aria-label="Herramienta Editor de Texturas"
+          >
+            Editor de Texturas
+          </button>
+          <button
+            type="button"
+            class="te-nav-action"
+            data-switch-tool="holoprint"
+            aria-label="Herramienta HoloPrint"
+          >
+            HoloPrint (.mcpack)
+          </button>
+          <button
+            type="button"
+            class="te-nav-action"
+            data-switch-tool="converter"
+            aria-label="Herramienta Conversor Universal de Esquemáticos"
+          >
+            Conversor (.schem / .mcstructure)
+          </button>
+          <button
+            type="button"
+            class="te-nav-action"
+            data-switch-tool="merger"
+            aria-label="Herramienta Fusionador de Paquetes de Texturas"
+          >
+            Fusionador (.mcpack)
+          </button>
+        </nav>
+
+        <div class="te-topbar-cta">
+          <button type="button" class="te-btn te-btn-primary" id="global-primary-cta">
+            <span>Exportar PNG</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- Vista 1: Editor de Texturas -->
+      <div id="tool-texture-editor" class="mt-tool-view"></div>
+
+      <!-- Vista 2: HoloPrint (Generador de Hologramas .mcpack por VkYakee) -->
+      <div id="tool-holoprint" class="mt-tool-view is-hidden"></div>
+
+      <!-- Vista 3: Conversor Universal de Esquemáticos (Java <-> Bedrock <-> 3D) -->
+      <div id="tool-converter" class="mt-tool-view is-hidden"></div>
+
+      <!-- Vista 4: Fusionador de Paquetes de Texturas (Texture Pack Merger) -->
+      <div id="tool-merger" class="mt-tool-view is-hidden"></div>
+    </div>
+
+    <script type="module">
+      import { TextureEditor } from './TextureEditor.js';
+      import { HoloPrintTool } from './HoloPrintTool.js';
+      import { SchematicConverter } from './SchematicConverter.js';
+      import { TexturePackMerger } from './TexturePackMerger.js';
+
+      document.addEventListener('DOMContentLoaded', () => {
+        const textureContainer = document.getElementById('tool-texture-editor');
+        const holoprintContainer = document.getElementById('tool-holoprint');
+        const converterContainer = document.getElementById('tool-converter');
+        const mergerContainer = document.getElementById('tool-merger');
+        const primaryCta = document.getElementById('global-primary-cta');
+        const navButtons = document.querySelectorAll('[data-switch-tool]');
+
+        const textureEditor = new TextureEditor(textureContainer, {
+          initialSize: 16,
+          initialColor: '#5E8D34',
+          seedInitialPattern: true,
+          showTopbar: false,
+        });
+
+        const holoPrint = new HoloPrintTool(holoprintContainer);
+        const schematicConverter = new SchematicConverter(converterContainer);
+        const texturePackMerger = new TexturePackMerger(mergerContainer);
+
+        window.textureEditor = textureEditor;
+        window.holoPrint = holoPrint;
+        window.schematicConverter = schematicConverter;
+        window.texturePackMerger = texturePackMerger;
+
+        let activeTool = 'texture-editor';
+
+        function switchTool(toolId) {
+          activeTool = toolId;
+          navButtons.forEach((btn) => {
+            btn.classList.toggle('is-active', btn.getAttribute('data-switch-tool') === toolId);
+          });
+
+          textureContainer.classList.toggle('is-hidden', toolId !== 'texture-editor');
+          holoprintContainer.classList.toggle('is-hidden', toolId !== 'holoprint');
+          converterContainer.classList.toggle('is-hidden', toolId !== 'converter');
+          mergerContainer.classList.toggle('is-hidden', toolId !== 'merger');
+
+          if (toolId === 'texture-editor') {
+            primaryCta.querySelector('span').textContent = 'Exportar PNG';
+          } else if (toolId === 'holoprint') {
+            primaryCta.querySelector('span').textContent = 'Generar .mcpack';
+            holoPrint._refreshAllViews();
+          } else if (toolId === 'converter') {
+            primaryCta.querySelector('span').textContent = 'Convertir Esquemático';
+            schematicConverter._refreshModelAndView();
+          } else {
+            primaryCta.querySelector('span').textContent = 'Exportar .mcpack Fusionado';
+          }
+        }
+
+        navButtons.forEach((btn) => {
+          btn.addEventListener('click', () => {
+            switchTool(btn.getAttribute('data-switch-tool'));
+          });
+        });
+
+        primaryCta.addEventListener('click', () => {
+          if (activeTool === 'texture-editor') {
+            textureEditor.exportPNG();
+          } else if (activeTool === 'holoprint') {
+            holoPrint.generateAndDownloadMcpack();
+          } else if (activeTool === 'converter') {
+            schematicConverter.triggerConversionDownload();
+          } else {
+            texturePackMerger.exportMergedMcpack();
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
